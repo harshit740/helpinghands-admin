@@ -1,28 +1,44 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+  <v-app>
+    <app-bar></app-bar>
+    <sidebar></sidebar>
+    <v-main>
+      <v-layout v-if="isload" justify-center>
+        <v-progress-circular
+            class="text-xs-center justify-lg-end"
+            :size="100"
+            :width="10"
+            color="white"
+            indeterminate
+        ></v-progress-circular>
+      </v-layout>
+
+      <router-view v-else/>
+    </v-main>
+  </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+
+import AppBar from "@/components/AppBar";
+import Sidebar from "@/components/Sidebar";
 
 export default {
   name: 'App',
-  components: {
-    HelloWorld
-  }
-}
-</script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
+  components: {Sidebar, AppBar},
+  mounted() {
+    this.$store.dispatch('loadPosts')
+  },
+  computed: {
+    isload() {
+      console.log("IslOading")
+      return this.$store.getters.isLoading
+    }
+  },
+  data: () => ({
+    drawer: true
+  }),
+  watch: {}
+};
+</script>
