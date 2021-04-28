@@ -55,8 +55,8 @@ export default {
       get() {
         return this.$store.getters.isSelectedCity
       },
-      set() {
-        console.log("iside Setter Obhect")
+      set(value) {
+        this.$store.commit('setSelectedCity', value)
       }
     }
   },
@@ -73,7 +73,13 @@ export default {
     }
     ,
     resourceOnSelect(data) {
-      this.$store.dispatch('loadPosts', {resource: data})
+      if (this.selectedCity) {
+        console.log(this.$store.getters.isSelectedCity)
+        this.$store.dispatch('loadPosts', {resource: data, city: this.$store.getters.isSelectedCity})
+      } else {
+        this.$store.dispatch('loadPosts', {resource: data})
+
+      }
     }
   }
 }

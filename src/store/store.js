@@ -6,7 +6,7 @@ Vue.use(Vuex)
 
 export const store = new Vuex.Store({
     state: {
-        selectedCity:{},
+        selectedCity: {},
         posts: {},
         city: {},
         resources: {},
@@ -55,7 +55,7 @@ export const store = new Vuex.Store({
         async setResources(state, items) {
             state.resources = items
         },
-        async setSelectedCity(state,payload){
+        async setSelectedCity(state, payload) {
             console.log(payload)
             state.selectedCity = payload
         },

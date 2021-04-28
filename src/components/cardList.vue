@@ -11,10 +11,7 @@
           <v-item >
             <card
                 v-if="post"
-                :title="post['personName']"
-                :phonenumer="post['personContactNo']"
-                :resource="post['resource']"
-                :city="post['city']"
+                :post="post"
                 class="d-flex align-center"
                 dark
                 height="240"

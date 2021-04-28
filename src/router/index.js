@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-//import Home from '../views/Home.vue'
 import CardList from '../components/cardList.vue'
 
 Vue.use(VueRouter)
