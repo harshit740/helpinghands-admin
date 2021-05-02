@@ -24,11 +24,16 @@
       </v-layout>
       <v-layout justify-space-around row>
         <v-card-actions v-if="!post['approved']">
-          <v-btn class="ma-2" color="green" dark>Approve
+          <v-btn class="ma-2" color="green" :loading="isLoading" dark @click="approve(post)">Approve
             <v-icon dark right>mdi-checkbox-marked-circle</v-icon>
           </v-btn>
-          <v-btn class="ma-2" color="red" dark>Reject
+          <v-btn class="ma-2" color="red" dark @click=reject(post)>Reject
             <v-icon dark left>fa-times</v-icon>
+          </v-btn>
+        </v-card-actions>
+        <v-card-actions v-if="post['approved']">
+          <v-btn class="ma-2" color="green" dark>Approved
+            <v-icon dark right>mdi-checkbox-marked-circle</v-icon>
           </v-btn>
         </v-card-actions>
       </v-layout>
@@ -38,8 +43,15 @@
 </template>
 
 <script>
+import {host} from "@/config";
+
 export default {
   name: "card",
+  data: () => {
+    return {
+      isLoading: false
+    }
+  },
   props: [
     'post'
   ],
@@ -51,6 +63,18 @@ export default {
       this.$store.dispatch('loadPosts', {city: data._id})
       this.$store.commit('setSelectedCity', data)
       console.log(data)
+    },
+    async approve(post) {
+      this.isLoading = true
+      let response = (await this.$axios.post(host + '/manageMod/approvePost', {postId: post['_id']})).data
+      if (response['code'] === 200) {
+        this.post['approved'] = true
+      }
+      this.isLoading = false
+    },
+    reject(post) {
+      console.log(post)
+
     }
   }
 

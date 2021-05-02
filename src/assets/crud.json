@@ -1,0 +1,244 @@
+{
+  "users": {
+    "Name": "Users",
+    "getApi": "/manageAdmin/getUsers/",
+    "createApi": "/manageAdmin/CreateUser/",
+    "updateApi": "/manageAdmin/UpdateUser",
+    "deleteApi": "/manageAdmin/deleteUser",
+    "headers": [
+      {
+        "text": "UserName",
+        "align": "start",
+        "value": "username"
+      },
+      {
+        "text": "Email",
+        "value": "email"
+      },
+      {
+        "text": "Role",
+        "value": "role"
+      },
+      {
+        "text": "Active",
+        "value": "active"
+      },
+      {
+        "text": "Actions",
+        "value": "actions",
+        "sortable": false
+      }
+    ],
+    "editedItem": {
+      "username": "",
+      "email": "",
+      "role": [
+        "Admin",
+        "Moderator",
+        "NormalUser"
+      ],
+      "password": "",
+      "active": false
+    },
+    "prerequisites": {
+      "required": false
+    },
+    "newForm": {
+      "username": {
+        "type": "text",
+        "disabledOnUpdate": true
+      },
+      "email": {
+        "type": "email",
+        "disabledOnUpdate": true
+      },
+      "role": {
+        "type": "select",
+        "defaultValues": [
+          "Admin",
+          "Moderator",
+          "NormalUser"
+        ]
+      },
+      "password": "password",
+      "active": {
+        "type": "select",
+        "defaultValues": [
+          true,
+          false
+        ]
+      }
+    }
+  },
+  "resources": {
+    "Name": "Resources",
+    "createApi": "/manageAdmin/addResource/",
+    "getApi": "/getResources/",
+    "deleteApi": "/manageAdmin/deleteResource/",
+    "updateApi": "/manageAdmin/updateResource/",
+    "headers": [
+      {
+        "text": "ResourceName",
+        "align": "start",
+        "value": "resourceName"
+      },
+      {
+        "text": "ResourceType",
+        "value": "resourceType"
+      },
+      {
+        "text": "Actions",
+        "value": "actions",
+        "sortable": false
+      }
+    ],
+    "editedItem": {
+      "resourceName": "",
+      "resourceType": ""
+    },
+    "newForm": {
+      "resourceName": {
+        "type": "text",
+        "disabledOnUpdate": true
+      },
+      "resourceType": ""
+    },
+    "prerequisites": {
+      "required": false
+    }
+  },
+  "city": {
+    "Name": "City",
+    "createApi": "/manageAdmin/addCity/",
+    "getApi": "/getCity/",
+    "updateApi": "/manageAdmin/updateCity/",
+    "headers": [
+      {
+        "text": "CityName",
+        "align": "start",
+        "value": "Name"
+      },
+      {
+        "text": "State",
+        "value": "State.Name"
+      },
+      {
+        "text": "Actions",
+        "value": "actions",
+        "sortable": false
+      }
+    ],
+    "editedItem": {
+      "name": "",
+      "stateId": ""
+    },
+    "newForm": {
+      "Name": "text",
+      "State": {
+        "type": "select",
+        "getDefaultValuesPreName": "State",
+        "preNestedName": "Name",
+        "disabledOnUpdate": false
+      }
+    },
+    "prerequisites": {
+      "required": true,
+      "State": "/getState"
+    }
+  },
+  "posts": {
+    "Name": "Posts",
+    "getApi": "/posts",
+    "createApi": "/posts/createPost/",
+    "updateApi": "/posts/UpdatePost",
+    "deleteApi": "/posts/deletePost",
+    "headers": [
+      {
+        "text": "PersonName",
+        "align": "start",
+        "value": "personName"
+      },
+      {
+        "text": "Contact",
+        "value": "personContactNo"
+      },
+      {
+        "text": "Resource",
+        "value": "resource.resourceName"
+      },
+      {
+        "text": "City",
+        "value": "city.Name"
+      },
+      {
+        "text": "Address",
+        "value": "address"
+      },
+      {
+        "text": "Approved",
+        "value": "approved"
+      },
+      {
+        "text": "Posted On",
+        "value": "created"
+      },
+      {
+        "text": "Actions",
+        "value": "actions",
+        "sortable": false
+      }
+    ],
+    "editedItem": {
+      "personName": "",
+      "personContactNo": "",
+      "resource": "",
+      "cityId": "",
+      "stateId": ""
+    },
+    "prerequisites": {
+      "required": true,
+      "Resources": "/getResources",
+      "States": "/getState",
+      "City": "/getCity"
+    },
+    "newForm": {
+      "personName": {
+        "type": "text",
+        "disabledOnUpdate": true
+      },
+      "personContactNo": {
+        "type": "text",
+        "disabledOnUpdate": true
+      },
+      "postedBy": {
+        "type": "email",
+        "disabledOnUpdate": true
+      },
+      "resource": {
+        "type": "select",
+        "getDefaultValuesPreName": "Resources",
+        "preNestedName": "resourceName",
+        "disabledOnUpdate": true
+      },
+      "City": {
+        "type": "select",
+        "getDefaultValuesPreName": "City",
+        "preNestedName": "Name",
+        "disabledOnUpdate": true
+      },
+      "State": {
+        "type": "select",
+        "getDefaultValuesPreName": "States",
+        "preNestedName": "Name",
+        "disabledOnUpdate": true
+      },
+      "approved": {
+        "type": "select",
+        "defaultValues": [
+          true,
+          false
+        ]
+      }
+    }
+  }
+}

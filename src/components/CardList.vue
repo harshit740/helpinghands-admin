@@ -3,12 +3,12 @@
     <v-item-group>
       <v-row>
         <v-col
-            v-for="post in posts.data"
+            v-for="post in this.posts.data"
             :key="post._id"
             cols="12"
             md="3"
         >
-          <v-item >
+          <v-item>
             <card
                 v-if="post"
                 :post="post"
@@ -25,17 +25,14 @@
 </template>
 
 <script>
-import Card from "@/components/card";
-import {mapState} from 'vuex';
+import Card from "@/components/Card";
 
 export default {
+  props: [
+    'posts'
+  ],
   name: "cardList",
   components: {Card},
-  computed: mapState([
-    'posts'
-  ]),
-  watch: {
-  }
 
 }
 </script>

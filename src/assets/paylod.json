@@ -1,0 +1,18 @@
+{
+  "Users": {
+    "prerequisites": {},
+    "data": []
+  },
+  "City": {
+    "prerequisites": {},
+    "data": []
+  },
+  "Resources": {
+    "prerequisites": {},
+    "data": []
+  },
+  "Posts": {
+    "prerequisites": {},
+    "data": []
+  }
+}

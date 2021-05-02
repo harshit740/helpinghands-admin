@@ -7,11 +7,11 @@
   >
     <v-list-item>
       <v-list-item-avatar>
-        <v-img src="https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?class=photo"></v-img>
+        <v-img src="https://www.gravatar.com/avatar/205e460b479e2e5b48aef07710c08d50?class=photo"></v-img>
       </v-list-item-avatar>
 
       <v-list-item-content>
-        <v-list-item-title>Anonymous</v-list-item-title>
+        <v-list-item-title>{{ getUserName }}</v-list-item-title>
       </v-list-item-content>
     </v-list-item>
 
@@ -19,23 +19,28 @@
 
     <v-list dense>
       <v-list-item>
-        <v-btn>
-          <router-link to="/">Home</router-link>
-        </v-btn>
+        <router-link to="/">Home</router-link>
       </v-list-item>
       <v-list-item>
-        <v-list-item-title>
-          <router-link to="/home">Go to Foo</router-link>
-        </v-list-item-title>
+        <router-link to="users">Users</router-link>
+      </v-list-item>
+      <v-list-item>
+        <router-link to="resources">Resources</router-link>
+      </v-list-item>
+      <v-list-item>
+        <router-link to="city">City</router-link>
+      </v-list-item>
+      <v-list-item>
+        <router-link to="posts">Posts</router-link>
       </v-list-item>
     </v-list>
   </v-navigation-drawer>
 </template>
 
 <script>
+
 export default {
   data: () => ({
-    username: "",
     drawer: false,
     drawerClosed: false
   }),
@@ -46,6 +51,12 @@ export default {
         this.$store.commit("setDrawer")
       }
     }
+  },
+  computed: {
+    getUserName: () => {
+      let username = JSON.parse(localStorage.getItem('Auth'))
+      return username['username']
+    },
   },
   created() {
     this.unsubscribe = this.$store.subscribe((mutation, state) => {

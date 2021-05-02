@@ -1,12 +1,18 @@
 import Vuex from "vuex";
 import Vue from 'vue'
 import {axiosApi} from '@/middilwares/interceptors'
+import {host} from '@/config'
+import payload from '../assets/paylod.json'
 
 Vue.use(Vuex)
 
 export const store = new Vuex.Store({
     state: {
-        selectedCity: {},
+        mutating: false,
+        selected: {
+            selectedCity: null,
+            selectedResource: null,
+        },
         posts: {},
         city: {},
         resources: {},
@@ -15,7 +21,9 @@ export const store = new Vuex.Store({
             loading: false,
             loadCount: 0
         },
-        username: 'anonymous'
+        model:payload,
+        username: 'Anonymous',
+        users: []
     },
     getters: {
         isLoading: state => {
@@ -27,24 +35,27 @@ export const store = new Vuex.Store({
         isOpened: state => {
             return state.drawer;
         },
-        isSelectedCity: state => {
-            return state.selectedCity;
-        }
+        getSelectedCity: state => {
+            return state.selected.selectedCity;
+        },
+        getSelectedResource: state => {
+            return state.selected.selectedResource;
+        },
+        getUsers: state => state.model.users,
+        getModel: state => state.model
     },
     mutations: {
-        async setLoading(state) {
-            state.loader.loading = !state.loader.loading;
+        async setLoading(state, payload) {
+            state.loader.loading = payload
         },
         async setLoadCount(state) {
             state.loader.loadCount++
         },
         async setDrawer(state) {
-            console.log("Set drawer called inside store")
             state.drawer = !state.drawer;
-            console.log("Drawer Value " + state.drawer)
         },
-        async setUsername(state) {
-            console.log(state.username)
+        async setUsername(state, username) {
+            state.username = username
         },
         async setPosts(state, items) {
             state.posts = items
@@ -56,41 +67,89 @@ export const store = new Vuex.Store({
             state.resources = items
         },
         async setSelectedCity(state, payload) {
-            console.log(payload)
-            state.selectedCity = payload
+            state.selected.selectedCity = payload
         },
+        async setSelectedResource(state, payload) {
+            state.selected.selectedResource = payload
+        },
+        async setModel(state, payload) {
+            state.model[payload.key]['data'] = payload['data']
+            state.model = {...state.model}
+        },
+        async setPrerequisites(state, payload) {
+            state.model[payload.Name]['prerequisites'][payload.key] = payload.data['data']
+            state.model = {...state.model}
+
+        },
+        async dummyCommit() {
+        }
     }, actions: {
         loadPosts({commit, state}, payload) {
             console.log("Payload inside store" + payload + state)
             axiosApi
-                .post('https://helpinghands-backedn.herokuapp.com/posts/', payload)
+                .post(host + '/posts/', payload)
                 .then(response => response.data)
                 .then(items => {
-                    console.log(items);
                     commit('setPosts', items)
                 })
         },
         loadCity({commit}) {
             axiosApi
-                .post('https://helpinghands-backedn.herokuapp.com/getCity/', {
+                .post(host + '/getCity/', {
                     headers: {'Content-Type': 'application/json'}
                 })
                 .then(response => response.data)
                 .then(items => {
-                    console.log(items);
                     commit('setCity', items)
                 })
         },
         loadResources({commit}) {
             axiosApi
-                .post('https://helpinghands-backedn.herokuapp.com/getResources/', {
+                .post(host + '/getResources/', {
                     headers: {'Content-Type': 'application/json'}
                 })
                 .then(response => response.data)
                 .then(items => {
-                    console.log(items);
                     commit('setResources', items)
                 })
+        },
+        getUsers({commit}) {
+            axiosApi
+                .post(host + '/manageAdmin/getUsers/', {
+                    headers: {'Content-Type': 'application/json'}
+                })
+                .then(response => response.data)
+                .then(items => {
+                    commit('setModel', {data: items['data'], key: 'Users'})
+                })
+        },
+        getResources({commit}) {
+            axiosApi
+                .post(host + '/getResources/', {
+                    headers: {'Content-Type': 'application/json'}
+                })
+                .then(response => response.data)
+                .then(items => {
+                    commit('setModel', {data: items, key: 'Resources'})
+                })
+        },
+        getData({commit}, payload) {
+            axiosApi
+                .post(host + '' + payload.api,)
+                .then(response => response.data)
+                .then(items => {
+                    commit('setModel', {data: items['data'], key: payload.key})
+                })
+        },
+        async approvePost({commit}, payload) {
+            axiosApi
+                .post(host + '/manageMod/approvePost', payload)
+                .then(response => response.data)
+                .then(items => {
+                    console.log(items)
+                    this.dispatch('loadPosts', {})
+                })
+            commit('dummyCommit')
         }
     },
 })
