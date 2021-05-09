@@ -156,11 +156,18 @@
       {
         "text": "PersonName",
         "align": "start",
-        "value": "personName"
+        "value": "personName",
+        "filterable": true
       },
       {
         "text": "Contact",
-        "value": "personContactNo"
+        "value": "personContactNo",
+        "filterable": true
+      },
+      {
+        "text": "PostedBy",
+        "value": "postedBy",
+        "filterable": true
       },
       {
         "text": "Resource",
@@ -171,16 +178,17 @@
         "value": "city.Name"
       },
       {
-        "text": "Address",
-        "value": "address"
-      },
-      {
         "text": "Approved",
-        "value": "approved"
+        "value": "approved",
+        "filterable": true
       },
       {
         "text": "Posted On",
-        "value": "created"
+        "value": "createdAt"
+      },
+      {
+        "text": "Links",
+        "value": "links"
       },
       {
         "text": "Actions",
@@ -193,7 +201,8 @@
       "personContactNo": "",
       "resource": "",
       "cityId": "",
-      "stateId": ""
+      "stateId": "",
+      "links": ""
     },
     "prerequisites": {
       "required": true,
@@ -203,34 +212,38 @@
     },
     "newForm": {
       "personName": {
-        "type": "text",
-        "disabledOnUpdate": true
+        "type": "text"
       },
       "personContactNo": {
-        "type": "text",
-        "disabledOnUpdate": true
+        "type": "text"
       },
       "postedBy": {
         "type": "email",
-        "disabledOnUpdate": true
+        "disabledOnUpdate": false
       },
       "resource": {
         "type": "select",
         "getDefaultValuesPreName": "Resources",
-        "preNestedName": "resourceName",
-        "disabledOnUpdate": true
+        "preNestedName": "resourceName"
+      },
+      "address": {
+        "type": "text"
+      },
+      "otherInfo": {
+        "type": "text"
       },
       "City": {
         "type": "select",
         "getDefaultValuesPreName": "City",
-        "preNestedName": "Name",
-        "disabledOnUpdate": true
+        "preNestedName": "Name"
       },
       "State": {
         "type": "select",
         "getDefaultValuesPreName": "States",
-        "preNestedName": "Name",
-        "disabledOnUpdate": true
+        "preNestedName": "Name"
+      },
+      "links": {
+        "type": "text"
       },
       "approved": {
         "type": "select",
@@ -239,6 +252,9 @@
           false
         ]
       }
+    },
+    "detailsHeaders": {
+
     }
   }
 }

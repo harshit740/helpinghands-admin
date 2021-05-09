@@ -21,7 +21,7 @@ export const store = new Vuex.Store({
             loading: false,
             loadCount: 0
         },
-        model:payload,
+        model: payload,
         username: 'Anonymous',
         users: []
     },

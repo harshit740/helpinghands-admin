@@ -2,15 +2,19 @@ import axios from "axios";
 import {store} from "@/store/store"
 import router from "@/router";
 import {host} from '@/config'
+
 export const axiosApi = axios.create();
 
 
 axiosApi.interceptors.request.use(async function (config) {
     store.commit('setLoading', true)
-    if (config.url !== host +"/users/login") {
+    if (config.url !== host + "/users/login") {
         let token = JSON.parse(await localStorage.getItem('Auth'))
         if (token) {
             config.headers['Authorization'] = token['token'];
+            if ('approved' in config.data && config.data['approved']) {
+                delete config.data['approved']
+            }
             return config
         } else {
             await router.push('/accounts/login')

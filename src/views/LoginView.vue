@@ -19,6 +19,7 @@
         style="padding: 10px"
         ref="form"
         lazy-validation
+        :disabled="isLoading"
     >
       <v-text-field
           v-model="credentials.username"
@@ -50,6 +51,9 @@ import {host} from '@/config'
 export default {
 
   name: "Login",
+  created() {
+    localStorage.removeItem("Auth")
+  },
   data: () => {
     return {
       isLoading: false,

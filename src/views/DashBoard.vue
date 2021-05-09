@@ -1,6 +1,7 @@
 <template>
-
-  <card-list v-if="posts" :posts="posts"></card-list>
+<v-container>
+  <card-list v-show="posts" :posts="posts"></card-list>
+</v-container>
 </template>
 
 <script>

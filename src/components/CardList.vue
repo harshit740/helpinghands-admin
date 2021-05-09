@@ -1,16 +1,15 @@
 <template>
-  <v-container>
     <v-item-group>
       <v-row>
         <v-col
             v-for="post in this.posts.data"
             :key="post._id"
-            cols="12"
+            cols="14"
             md="3"
         >
           <v-item>
             <card
-                v-if="post"
+                v-show="post"
                 :post="post"
                 class="d-flex align-center"
                 dark
@@ -21,7 +20,6 @@
         </v-col>
       </v-row>
     </v-item-group>
-  </v-container>
 </template>
 
 <script>

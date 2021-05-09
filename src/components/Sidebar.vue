@@ -13,6 +13,9 @@
       <v-list-item-content>
         <v-list-item-title>{{ getUserName }}</v-list-item-title>
       </v-list-item-content>
+      <v-list-item-content>
+        <v-btn @click="logout">Logout</v-btn>
+      </v-list-item-content>
     </v-list-item>
 
     <v-divider></v-divider>
@@ -22,6 +25,9 @@
         <router-link to="/">Home</router-link>
       </v-list-item>
       <v-list-item>
+        <router-link to="posts">Posts</router-link>
+      </v-list-item>
+      <v-list-item>
         <router-link to="users">Users</router-link>
       </v-list-item>
       <v-list-item>
@@ -29,9 +35,6 @@
       </v-list-item>
       <v-list-item>
         <router-link to="city">City</router-link>
-      </v-list-item>
-      <v-list-item>
-        <router-link to="posts">Posts</router-link>
       </v-list-item>
     </v-list>
   </v-navigation-drawer>
@@ -44,7 +47,11 @@ export default {
     drawer: false,
     drawerClosed: false
   }),
-  methods: {},
+  methods: {
+    logout() {
+      this.$router.push('/accounts/login');
+    }
+  },
   watch: {
     drawer() {
       if (this.drawer) {

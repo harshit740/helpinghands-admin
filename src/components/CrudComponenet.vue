@@ -3,6 +3,7 @@
       :fixed-header="true"
       :headers="this.form.headers"
       :items="model[this.form.Name]['data']"
+      :search="search"
       class="elevation-2"
   >
     <template v-slot:top>
@@ -14,13 +15,42 @@
             vertical
         ></v-divider>
         <v-spacer></v-spacer>
-        <v-dialog
-            v-model="dialog"
-            max-width="500px"
-        >
+        <v-text-field
+            v-model="search"
+            append-icon="mdi-magnify"
+            label="Search"
+            single-line
+            hide-details
+        ></v-text-field>
+        <v-spacer></v-spacer>
+        <v-dialog v-model="isCardEnabled" max-width="570px">
+          <v-card>
+            <v-card-title class="error--text" v-if="isErrored">{{ massage }}</v-card-title>
+            <v-card-title>
+              <span class="headline">Details</span>
+            </v-card-title>
+            <v-layout v-for="(item,key) in currentItem" v-bind:key="key" column>
+              <v-card-text>
+                {{ key.toUpperCase() }} : {{ item }}
+              </v-card-text>
+              </v-layout>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn
+                  color="blue darken-1"
+                  text
+                  @click="close"
+              >
+                Close
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+        <v-dialog v-model="dialog" max-width="570px">
           <template v-slot:activator="{ on, attrs }">
             <v-btn
                 color="primary"
+                max-width="200px"
                 dark
                 class="mb-2"
                 v-bind="attrs"
@@ -45,6 +75,7 @@
                     <v-select
                         v-if="item.hasOwnProperty('type') && item['type'] === 'select' && item.hasOwnProperty('defaultValues')"
                         :items="form['newForm'][key]['defaultValues']"
+                        :label="key.toString().toLocaleUpperCase()"
                         v-model="editedItem[key]">
                     </v-select>
                     <v-select
@@ -52,6 +83,7 @@
                         :items="getDefaultValues(form['newForm'][key]['getDefaultValuesPreName'])"
                         :item-text="form['newForm'][key]['preNestedName']"
                         item-value="_id"
+                        :label="key.toString().toLocaleUpperCase()"
                         v-model="editedItem[key]"
                         :disabled="item.hasOwnProperty('disabledOnUpdate') && item['disabledOnUpdate'] && (editedIndex > -1)"
                     >
@@ -121,6 +153,41 @@
           @click="deleteItem(item)">
         mdi-delete
       </v-icon>
+      <v-icon
+          small
+          @click="showDetils(item)">
+        mdi-checkbox-marked-circle
+      </v-icon>
+    </template>
+    <template v-slot:item.createdAt="{ item }">
+      <v-chip v-if="item.hasOwnProperty('createdAt')">
+        {{ new Date(item['createdAt']).toLocaleString() }}
+      </v-chip>
+    </template>
+    <template v-slot:item.otherInfo="{ item }">
+      <v-expansion-panels v-if="item['otherInfo']">
+        <v-expansion-panel>
+          <v-expansion-panel-header>
+            Show
+          </v-expansion-panel-header>
+          <v-expansion-panel-content>
+            {{ item['otherInfo'] }}
+          </v-expansion-panel-content>
+        </v-expansion-panel>
+      </v-expansion-panels>
+    </template>
+    <template v-slot:item.links="{ item }">
+      <v-btn v-if="item.links && item.links.length !==0" @click="openInNewWindow(item)">Source</v-btn>
+    </template>
+    <template v-slot:item.approved="{ item }">
+      <v-chip-group>
+        <v-chip v-if="item['approved']" color="green">
+          Approved
+        </v-chip>
+        <v-chip v-else color="red">
+          Not Approved
+        </v-chip>
+      </v-chip-group>
     </template>
   </v-data-table>
 </template>
@@ -129,8 +196,11 @@
 import {mapState} from "vuex";
 
 export default {
+  components: {},
   props: ["form"],
   data: () => ({
+    isCardEnabled: false,
+    search: "",
     massage: "",
     dialog: false,
     dialogDelete: false,
@@ -138,7 +208,8 @@ export default {
     editedItem: {},
     defaultItem: {},
     isLoading: false,
-    isErrored: false
+    isErrored: false,
+    currentItem: {},
   }),
 
   computed: {
@@ -159,11 +230,9 @@ export default {
     },
   },
   created() {
-    console.log("Mounted")
     this.editedItem = this.form.editedItem
     this.defaultItem = this.form.editedIndex
     this.$store.dispatch("getData", {"api": this.form.getApi, "key": this.form.Name})
-    console.log(this.form['prerequisites'])
     if (this.form['prerequisites']['required'] === true) {
       for (let key in this.form['prerequisites']) {
         if (key !== "required") {
@@ -175,19 +244,31 @@ export default {
     }
   },
   methods: {
+    openInNewWindow(item) {
+      if (item.links.length === 1) {
+        window.open(item.links)
+      } else {
+        for (const itemKey in item.links) {
+          window.open(itemKey)
+
+        }
+      }
+    },
     getDefaultValues(host) {
       if (this.model && this.model[this.form.Name]['data']) {
         return this.model[this.form.Name]['prerequisites'][host]
       } else {
-        return ['test']
+        return ['No Data']
       }
     },
     editItem(item) {
-      console.log("Edit Item")
-      console.log(item)
       this.editedIndex = this.model[this.form.Name]['data'].indexOf(item)
       this.editedItem = Object.assign({}, item)
       this.dialog = true
+    },
+    showDetils(item) {
+      this.currentItem = Object.assign({}, item)
+      this.isCardEnabled = true
     },
 
     deleteItem(item) {
@@ -197,9 +278,7 @@ export default {
     },
 
     async deleteItemConfirm() {
-      console.log(this.model[this.form.Name]['data'][this.editedIndex])
       let response = (await this.$axios.post(this.$host + this.form['deleteApi'], this.model[this.form.Name]['data'][this.editedIndex])).data
-      console.log(response)
       if (response['code'] === 200) {
         this.isErrored = false
         this.isLoading = false
@@ -233,7 +312,6 @@ export default {
         this.isLoading = true
         response = (await this.$axios.post(this.$host + this.form['createApi'], this.editedItem)).data
       }
-      console.log(response)
       if (response['code'] === 200) {
         this.isErrored = false
         this.isLoading = false
