@@ -4,6 +4,7 @@
       @close="drawer = false"
       absolute
       temporary
+      fixed
   >
     <v-list-item>
       <v-list-item-avatar>
@@ -20,21 +21,20 @@
 
     <v-divider></v-divider>
 
-    <v-list dense>
-      <v-list-item>
-        <router-link to="/">Home</router-link>
-      </v-list-item>
-      <v-list-item>
-        <router-link to="posts">Posts</router-link>
-      </v-list-item>
-      <v-list-item>
-        <router-link to="users">Users</router-link>
-      </v-list-item>
-      <v-list-item>
-        <router-link to="resources">Resources</router-link>
-      </v-list-item>
-      <v-list-item>
-        <router-link to="city">City</router-link>
+    <v-list>
+      <v-list-item
+          v-for="item in items"
+          :key="item.title"
+          link
+          @click="rout(item)"
+        >
+        <v-list-item-icon>
+          <v-icon>{{ item.icon }}</v-icon>
+        </v-list-item-icon>
+
+        <v-list-item-content>
+          <v-list-item-title>{{ item.title }}</v-list-item-title>
+        </v-list-item-content>
       </v-list-item>
     </v-list>
   </v-navigation-drawer>
@@ -44,13 +44,24 @@
 
 export default {
   data: () => ({
+    items: [
+      { title: 'Dashboard', icon: 'mdi-view-dashboard',route:"/" },
+      { title: 'Posts', icon: 'mdi-view-list',route: "posts" },
+      { title: 'Users', icon: 'mdi-account-box',route:"users" },
+      { title: 'Resources', icon: 'mdi-resource',route:"resources" },
+      { title: 'City', icon: 'mdi-city',route:"city" },
+
+    ],
     drawer: false,
     drawerClosed: false
   }),
   methods: {
+    rout(item){
+      this.$router.push(item.route);
+    },
     logout() {
       this.$router.push('/accounts/login');
-    }
+    },
   },
   watch: {
     drawer() {
@@ -68,7 +79,6 @@ export default {
   created() {
     this.unsubscribe = this.$store.subscribe((mutation, state) => {
       if (mutation.type === 'setDrawer') {
-        console.log("Setting Drawe")
         if (state.drawer) {
           this.drawer = state.drawer
         }

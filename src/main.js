@@ -6,7 +6,7 @@ import {store} from "./store/store"
 import router from './router'
 import {host} from './config'
 
-Vue.prototype.$host = host
+Vue.prototype.$host = host;
 Vue.config.productionTip = false
 Vue.prototype.$store = store;
 Vue.prototype.$axios = axiosApi;

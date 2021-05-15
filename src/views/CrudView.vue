@@ -1,5 +1,5 @@
 <template>
-  <crud-componenet v-if="this.form" :form="this.form"></crud-componenet>
+  <crud-component v-if="this.form" :form="this.form"></crud-component>
 </template>
 
 <script>
@@ -8,7 +8,7 @@ import form from '../assets/crud.json';
 
 export default {
   name: "CrudView",
-  components: {CrudComponenet: CrudComponent},
+  components: {CrudComponent: CrudComponent},
   props: [
     "FormName"
   ],

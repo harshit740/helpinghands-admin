@@ -13,7 +13,7 @@
       ></v-progress-linear>
     </template>
     <v-layout justify-center>
-      <v-card-title>Login</v-card-title>
+      <v-card-title>Management Portal Login</v-card-title>
     </v-layout>
     <v-form
         style="padding: 10px"
@@ -22,6 +22,7 @@
         :disabled="isLoading"
     >
       <v-text-field
+          append-icon="mdi-account-box"
           v-model="credentials.username"
           type="username"
           label="Username/Email"
@@ -29,6 +30,7 @@
       ></v-text-field>
 
       <v-text-field
+          append-icon="fas fa-key"
           label="Password"
           type="password"
           v-model="credentials.password"
@@ -39,7 +41,7 @@
       </v-card-text>
     </v-form>
     <v-card-actions>
-      <v-btn color=" lighten-2" @click="login" text>Login</v-btn>
+      <v-btn color=" lighten-2" @click="login">Login</v-btn>
     </v-card-actions>
   </v-card>
 </template>

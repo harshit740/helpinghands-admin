@@ -3,7 +3,6 @@
       app
       dark
       short
-      outlined
   >
     <v-app-bar-nav-icon @click.stop="setDrawer()"></v-app-bar-nav-icon>
     <v-layout v-if="$route.path === '/' && windowWidth < 600">
@@ -99,11 +98,8 @@ export default {
     return {
       sheet: false,
       windowWidth: window.innerWidth,
-      isshowunAproved: false
+      isShowUnApproved: false
     }
-  },
-  mounted() {
-    console.log(this.windowWidth)
   },
   computed: {
     ...mapState({
@@ -128,17 +124,15 @@ export default {
       }
     }
   },
-  watch: {}
-  ,
   methods: {
     checkboxChange(event) {
-      this.isshowunAproved = !event;
+      this.isShowUnApproved = !event;
       let payload = {}
       if (this.$store.getters.getSelectedResource && this.$store.getters.getSelectedCity) {
         payload = {
           city: this.$store.getters.getSelectedCity,
           resource: this.$store.getters.getSelectedResource,
-          approved: this.isshowunAproved
+          approved: this.isShowUnApproved
         }
       } else if (this.$store.getters.getSelectedCity) {
         payload = {city: this.$store.getters.getSelectedCity, approved: !event}
@@ -157,7 +151,7 @@ export default {
         this.$store.dispatch('loadPosts', {
           city: data,
           resource: this.$store.getters.getSelectedResource,
-          approved: this.isshowunAproved
+          approved: this.isShowUnApproved
         })
       } else if (data) {
         this.$store.dispatch('loadPosts', {city: data})
@@ -170,18 +164,14 @@ export default {
         this.$store.dispatch('loadPosts', {
           resource: data,
           city: this.$store.getters.getSelectedCity,
-          approved: this.isshowunAproved
+          approved: this.isShowUnApproved
         })
       } else if (data) {
-        this.$store.dispatch('loadPosts', {resource: data, approved: this.isshowunAproved})
+        this.$store.dispatch('loadPosts', {resource: data, approved: this.isShowUnApproved})
       } else {
-        this.$store.dispatch('loadPosts', {approved: this.isshowunAproved})
+        this.$store.dispatch('loadPosts', {approved: this.isShowUnApproved})
       }
     }
   }
 }
 </script>
-
-<style scoped>
-
-</style>

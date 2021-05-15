@@ -80,7 +80,6 @@ export default {
     onSelectCity(data) {
       this.$store.dispatch('loadPosts', {city: data._id})
       this.$store.commit('setSelectedCity', data)
-      console.log(data)
     },
     async approve(post) {
       this.isLoading = true
@@ -92,7 +91,6 @@ export default {
     },
     reject(post) {
       console.log(post)
-
     }
   }
 

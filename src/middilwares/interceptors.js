@@ -12,7 +12,7 @@ axiosApi.interceptors.request.use(async function (config) {
         let token = JSON.parse(await localStorage.getItem('Auth'))
         if (token) {
             config.headers['Authorization'] = token['token'];
-            if ('approved' in config.data && config.data['approved']) {
+            if (config.data && "approved" in config.data && config.data['approved']) {
                 delete config.data['approved']
             }
             return config

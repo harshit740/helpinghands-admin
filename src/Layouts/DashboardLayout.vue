@@ -25,12 +25,5 @@ export default {
   data: () => ({
     drawer: true
   }),
-  watch: {}
 };
 </script>
-
-<style scoped>
-.spinLayout {
-  margin: 30%;
-}
-</style>

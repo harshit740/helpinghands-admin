@@ -33,7 +33,7 @@
               <v-card-text>
                 {{ key.toUpperCase() }} : {{ item }}
               </v-card-text>
-              </v-layout>
+            </v-layout>
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn
@@ -155,7 +155,7 @@
       </v-icon>
       <v-icon
           small
-          @click="showDetils(item)">
+          @click="showDetails(item)">
         mdi-checkbox-marked-circle
       </v-icon>
     </template>
@@ -196,8 +196,7 @@
 import {mapState} from "vuex";
 
 export default {
-  components: {},
-  props: ["form"],
+  props: ['form'],
   data: () => ({
     isCardEnabled: false,
     search: "",
@@ -213,9 +212,7 @@ export default {
   }),
 
   computed: {
-    ...mapState([
-      "model"
-    ]),
+    ...mapState(['model']),
     formTitle() {
       return this.editedIndex === -1 ? 'New ' + this.form.Name : 'Edit ' + this.form.Name
     },
@@ -250,7 +247,6 @@ export default {
       } else {
         for (const itemKey in item.links) {
           window.open(itemKey)
-
         }
       }
     },
@@ -266,7 +262,7 @@ export default {
       this.editedItem = Object.assign({}, item)
       this.dialog = true
     },
-    showDetils(item) {
+    showDetails(item) {
       this.currentItem = Object.assign({}, item)
       this.isCardEnabled = true
     },
@@ -301,8 +297,7 @@ export default {
         this.editedItem = Object.assign({}, this.defaultItem)
         this.editedIndex = -1
       })
-    }
-    ,
+    },
     async save() {
       let response = {}
       if (this.editedIndex > -1) {

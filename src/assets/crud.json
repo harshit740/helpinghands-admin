@@ -129,8 +129,8 @@
       }
     ],
     "editedItem": {
-      "name": "",
-      "stateId": ""
+      "Name": "",
+      "State": ""
     },
     "newForm": {
       "Name": "text",
@@ -252,9 +252,6 @@
           false
         ]
       }
-    },
-    "detailsHeaders": {
-
     }
   }
 }
